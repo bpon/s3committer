@@ -16,6 +16,7 @@
 
 package com.netflix.bdp.s3;
 
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.google.common.base.Preconditions;
@@ -34,6 +35,7 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.mapreduce.JobStatus;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter;
+import org.apache.parquet.hadoop.ParquetOutputCommitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.File;
@@ -46,7 +48,7 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-class S3MultipartOutputCommitter extends FileOutputCommitter {
+class S3MultipartOutputCommitter extends ParquetOutputCommitter {
 
   private static final Logger LOG = LoggerFactory.getLogger(
       S3MultipartOutputCommitter.class);
@@ -66,7 +68,7 @@ class S3MultipartOutputCommitter extends FileOutputCommitter {
   private String s3KeyPrefix = null;
   private Path bucketRoot = null;
 
-  public S3MultipartOutputCommitter(Path outputPath, JobContext context)
+  public S3MultipartOutputCommitter(Path outputPath, TaskAttemptContext context)
       throws IOException {
     super(outputPath, context);
     this.constructorOutputPath = outputPath;
@@ -81,19 +83,10 @@ class S3MultipartOutputCommitter extends FileOutputCommitter {
         S3Committer.SPARK_WRITE_UUID,
         conf.get(S3Committer.SPARK_APP_ID, context.getJobID().toString())));
 
-    if (context instanceof TaskAttemptContext) {
-      this.workPath = taskAttemptPath((TaskAttemptContext) context, uuid);
-    } else {
-      this.workPath = null;
-    }
+    this.workPath = taskAttemptPath(context, uuid);
 
     this.wrappedCommitter = new FileOutputCommitter(
         Paths.getMultipartUploadCommitsDirectory(conf, uuid), context);
-  }
-
-  public S3MultipartOutputCommitter(Path outputPath, TaskAttemptContext context)
-      throws IOException {
-    this(outputPath, (JobContext) context);
   }
 
   /**
@@ -121,7 +114,23 @@ class S3MultipartOutputCommitter extends FileOutputCommitter {
    * @return a {@link AmazonS3} client
    */
   protected Object findClient(Path path, Configuration conf) {
-    return new AmazonS3Client();
+    final String accessKey = conf.get("fs.s3a.access.key");
+    final String secretKey = conf.get("fs.s3a.secret.key");
+    if (accessKey != null && secretKey != null) {
+      return new AmazonS3Client(new AWSCredentials() {
+        @Override
+        public String getAWSAccessKeyId() {
+          return accessKey;
+        }
+
+        @Override
+        public String getAWSSecretKey() {
+          return secretKey;
+        }
+      });
+    } else {
+      return new AmazonS3Client();
+    }
   }
 
   /**
