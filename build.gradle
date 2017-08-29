@@ -34,7 +34,7 @@ targetCompatibility = '1.7'
 
 dependencies {
     provided 'org.apache.parquet:parquet-hadoop:1.7.0'
-    provided 'com.amazonaws:aws-java-sdk-s3:1.11.15'
+    provided 'com.amazonaws:aws-java-sdk-s3:1.10.77'
     provided 'org.slf4j:slf4j-api:1.7.5'
     provided 'org.apache.hadoop:hadoop-client:2.7.2'
     provided 'org.apache.hadoop:hadoop-aws:2.7.2'
