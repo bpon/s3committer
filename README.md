@@ -1,3 +1,5 @@
+This is a fork of rdblues netflix commiter used by the Horizon team.  This includes fixes for parquet support and includes several fixes for race conditions.
+
 ## S3 output committers
 
 This project has Hadoop OutputCommitter implementations for S3.
