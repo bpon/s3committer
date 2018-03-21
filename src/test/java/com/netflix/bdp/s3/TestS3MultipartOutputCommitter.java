@@ -25,13 +25,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.mapreduce.JobContext;
-import org.apache.hadoop.mapreduce.JobID;
-import org.apache.hadoop.mapreduce.JobStatus;
-import org.apache.hadoop.mapreduce.TaskAttemptContext;
-import org.apache.hadoop.mapreduce.TaskAttemptID;
-import org.apache.hadoop.mapreduce.TaskID;
-import org.apache.hadoop.mapreduce.TaskType;
+import org.apache.hadoop.mapreduce.*;
 import org.apache.hadoop.mapreduce.task.JobContextImpl;
 import org.apache.hadoop.mapreduce.task.TaskAttemptContextImpl;
 import org.junit.Assert;
@@ -40,14 +34,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 import static com.netflix.bdp.s3.S3Committer.UPLOAD_SIZE;
@@ -97,13 +88,14 @@ public class TestS3MultipartOutputCommitter extends TestUtil.MiniDFSTest {
         "s3.multipart.committer.num-threads", String.valueOf(numThreads));
     getConfiguration().set(UPLOAD_UUID, UUID.randomUUID().toString());
     this.job = new JobContextImpl(getConfiguration(), JOB_ID);
-    this.jobCommitter = new MockedS3Committer(S3_OUTPUT_PATH, job);
-    jobCommitter.setupJob(job);
+
     this.uuid = job.getConfiguration().get(UPLOAD_UUID);
 
     this.tac = new TaskAttemptContextImpl(
         new Configuration(job.getConfiguration()), AID);
 
+    this.jobCommitter = new MockedS3Committer(S3_OUTPUT_PATH, tac);
+    jobCommitter.setupJob(job);
     // get the task's configuration copy so modifications take effect
     this.conf = tac.getConfiguration();
     conf.set("mapred.local.dir", "/tmp/local-0,/tmp/local-1");
