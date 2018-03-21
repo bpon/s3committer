@@ -1,5 +1,7 @@
 This is a fork of rdblues netflix committer. This branch includes fixes for parquet support for Apache Spark and includes fixes for race conditions and amazon server side encryption support.
 
+Tested with EMR 5.11.0 Release with 200K Partitions.
+
 ## S3 output committers
 
 This project has Hadoop OutputCommitter implementations for S3.
