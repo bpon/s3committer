@@ -1,4 +1,4 @@
-This is a fork of rdblues netflix commiter used by the Horizon team.  This includes fixes for parquet support and includes several fixes for race conditions.
+This is a fork of rdblues netflix committer. This branch includes fixes for parquet support for Apache Spark and includes fixes for race conditions and amazon server side encryption support.
 
 ## S3 output committers
 
