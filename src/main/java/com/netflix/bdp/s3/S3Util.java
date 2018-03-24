@@ -58,12 +58,15 @@ public class S3Util {
 
   public static PendingUpload multipartUpload(
       AmazonS3 client, File localFile, String partition,
-      String bucket, String key, long uploadPartSize) {
+      String bucket, String key, long uploadPartSize,boolean sseEnabled) {
 
-    ObjectMetadata objectMetadata = new ObjectMetadata();
-    objectMetadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
+    final ObjectMetadata objectMetadata = new ObjectMetadata();
 
-    InitiateMultipartUploadResult initiate = client.initiateMultipartUpload(
+    if(sseEnabled) {
+        objectMetadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
+    }
+
+    final InitiateMultipartUploadResult initiate = client.initiateMultipartUpload(
         new InitiateMultipartUploadRequest(bucket, key,objectMetadata));
     String uploadId = initiate.getUploadId();
 

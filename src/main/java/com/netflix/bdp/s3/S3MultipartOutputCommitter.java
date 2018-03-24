@@ -416,6 +416,7 @@ class S3MultipartOutputCommitter extends ParquetOutputCommitter {
         final List<S3Util.PendingUpload> commits =
                 Collections.synchronizedList(new ArrayList<S3Util.PendingUpload>());
 
+        boolean sseEnabled = conf.getBoolean(S3Committer.SSE_ENABLED,false);
 
         boolean threw = true;
         ObjectOutputStream completeUploadRequests = new ObjectOutputStream(
@@ -438,7 +439,7 @@ class S3MultipartOutputCommitter extends ParquetOutputCommitter {
                             String key = getFinalKey(relative, context);
                             S3Util.PendingUpload commit = S3Util.multipartUpload(client,
                                     localFile, partition, getBucket(context), key,
-                                    uploadPartSize);
+                                    uploadPartSize,sseEnabled);
                             commits.add(commit);
                         }
                     });
