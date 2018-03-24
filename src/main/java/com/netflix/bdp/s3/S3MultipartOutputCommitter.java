@@ -416,7 +416,7 @@ class S3MultipartOutputCommitter extends ParquetOutputCommitter {
         final List<S3Util.PendingUpload> commits =
                 Collections.synchronizedList(new ArrayList<S3Util.PendingUpload>());
 
-        boolean sseEnabled = conf.getBoolean(S3Committer.SSE_ENABLED,false);
+        boolean sseEnabled = conf.getBoolean(S3Committer.SSE_ENABLED,S3Committer.DEFAULT_SSE_ENABLED);
 
         boolean threw = true;
         ObjectOutputStream completeUploadRequests = new ObjectOutputStream(

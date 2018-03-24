@@ -25,6 +25,7 @@ public class S3Committer {
     public static final String SSE_ENABLED = "s3.multipart.committer.sse-enabled";
 
     public static final int DEFAULT_NUM_THREADS = 8;
+    public static final boolean DEFAULT_SSE_ENABLED = false;
 
     // Spark configuration keys
     public static final String SPARK_WRITE_UUID = "spark.sql.sources.writeJobUUID";
