@@ -1,3 +1,5 @@
+*Forked from [ywilkof/s3committer](https://github.com/ywilkof/s3committer) on GitHub. See [this article](http://www.yonatanwilkof.net/spark-s3-parquet-aws-commiter-reliable-file-system-hdfs-hadoop-netfix/) for details.*
+
 ## S3 output committers
 
 This project has Hadoop OutputCommitter implementations for S3.

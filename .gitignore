@@ -1,4 +1,9 @@
-.gradle/
+.*
+!.arcconfig
+!.gitignore
+
+*.iml
+
 build/
+out/
 target/
-.idea/

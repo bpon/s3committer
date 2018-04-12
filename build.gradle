@@ -33,18 +33,18 @@ sourceCompatibility = '1.7'
 targetCompatibility = '1.7'
 
 dependencies {
-    provided 'org.apache.parquet:parquet-hadoop:1.7.0'
-    provided 'com.amazonaws:aws-java-sdk-s3:1.10.77'
-    provided 'org.slf4j:slf4j-api:1.7.5'
-    provided 'org.apache.hadoop:hadoop-client:2.7.3'
-    provided 'org.apache.hadoop:hadoop-aws:2.7.3'
+    provided 'org.apache.parquet:parquet-hadoop:1.9.0'
+    provided 'com.amazonaws:aws-java-sdk-s3:1.11.269'
+    provided 'org.slf4j:slf4j-api:1.7.10'
+    provided 'org.apache.hadoop:hadoop-client:2.8.3'
+    provided 'org.apache.hadoop:hadoop-aws:2.8.3'
     provided 'com.google.guava:guava:11.0.2'
 
-    testCompile 'org.apache.hadoop:hadoop-hdfs:2.7.3:tests'
-    testCompile 'org.apache.hadoop:hadoop-common:2.7.3:tests'
-    testCompile 'org.apache.hadoop:hadoop-minicluster:2.7.3'
+    testCompile 'org.apache.hadoop:hadoop-hdfs:2.8.3:tests'
+    testCompile 'org.apache.hadoop:hadoop-common:2.8.3:tests'
+    testCompile 'org.apache.hadoop:hadoop-minicluster:2.8.3'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.slf4j:slf4j-simple:1.7.5'
+    testCompile 'org.slf4j:slf4j-simple:1.7.10'
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
 
